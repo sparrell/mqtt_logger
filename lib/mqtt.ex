@@ -17,7 +17,7 @@ defmodule Mqtt do
         raise """
         environment variable CLIENT_ID is missing.
         For example:
-        export CLIENT_ID=:sfractal2020
+        export CLIENT_ID=:mqttlogger
         """
 
     Logger.info("client_id is #{client_id}")
