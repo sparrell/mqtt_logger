@@ -14,15 +14,23 @@ defmodule MqttLogger.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: MqttLogger.PubSub},
       # Start the Endpoint (http/https)
-      MqttLoggerWeb.Endpoint
+      MqttLoggerWeb.Endpoint,
       # Start a worker by calling: MqttLogger.Worker.start_link(arg)
       # {MqttLogger.Worker, arg}
+      # start mqtt connection
+      {Tortoise.Supervisor,
+       [
+         name: Oc2Mqtt.Connection.Supervisor,
+         strategy: :one_for_one
+       ]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: MqttLogger.Supervisor]
     Supervisor.start_link(children, opts)
+    # start connection
+    Mqtt.start()
   end
 
   # Tell Phoenix to update the endpoint configuration
